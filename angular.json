@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "github-login-firbase"
+    }
+  },
+  "defaultProject": "github-login-firbase",
+  "cli": {
+    "analytics": false
+  }
 }
