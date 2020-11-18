@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from "./../../services/auth.service";
 
 @Component({
   selector: 'app-header',
@@ -6,10 +10,30 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
-  constructor() { }
+  email = null;
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {
+    auth.getUser().subscribe((user) => {
+      this.email = user?.email;
+    });
+  }
 
   ngOnInit(): void {
+  }
+
+
+  async handleSignOut() {
+    try {
+      const res = await this.auth.singOut();
+      this.router.navigateByUrl('/signin');
+      this.toastr.info("Login Again to continue");
+      this.email = null;
+    } catch (error) {
+      this.toastr.error('something is wrong ' + error);
+    }
   }
 
 }
